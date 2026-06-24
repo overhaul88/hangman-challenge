@@ -9,9 +9,12 @@ score level (`alpha*encoder + (1-alpha)*moe`, best offline at alpha=0.3). Polici
   - moe      : original MoE only
 If neither model loads it falls back to the original dictionary-frequency policy.
 
+The access token is read from the project-root `.env` (key `TREXQUANT_API`) by default,
+or can be overridden with `--token`.
+
 Usage:
-    python play_online.py --token YOUR_TOKEN --games 100 \
-        [--policy ensemble] [--alpha 0.3] [--practice 1]
+    python play_online.py --games 100 [--policy ensemble] [--alpha 0.3] [--practice 1]
+    python play_online.py --token YOUR_TOKEN --games 100   # explicit override
 """
 import argparse
 import collections
@@ -36,6 +39,7 @@ from vocab import CHAR_TO_IDX, MASK_IDX, NUM_LETTERS, letter_to_target, target_t
 from model import HangmanEncoder
 from evaluate import _aggregate, load_encoder
 from ensemble import encoder_scores, _moe_scorer
+from config import get_token
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODELS_DIR = os.path.join(BASE_DIR, "..", "models")
@@ -284,7 +288,8 @@ class HangmanAPIError(Exception):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--token", required=True, help="trexsim access token")
+    ap.add_argument("--token", default=None,
+                    help="trexsim access token (defaults to TREXQUANT_API in .env)")
     ap.add_argument("--games", type=int, default=100)
     ap.add_argument("--practice", type=int, default=1)
     ap.add_argument("--policy", default="ensemble", choices=["ensemble", "encoder", "moe"])
@@ -294,7 +299,11 @@ def main():
     ap.add_argument("--verbose", action="store_true")
     args = ap.parse_args()
 
-    api = HangmanAPI(access_token=args.token, timeout=2000, ckpt=args.ckpt,
+    token = args.token or get_token()
+    if not token:
+        raise SystemExit("No access token: set TREXQUANT_API in .env or pass --token.")
+
+    api = HangmanAPI(access_token=token, timeout=2000, ckpt=args.ckpt,
                      policy=args.policy, alpha=args.alpha, agg=args.agg)
     wins = 0
     for i in range(args.games):
