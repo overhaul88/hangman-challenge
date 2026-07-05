@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" width="100%" font-family="'Segoe UI',system-ui,-apple-system,sans-serif">
+  <rect x="0" y="0" width="880" height="400" rx="14" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="440" y="32" text-anchor="middle" font-size="19" font-weight="700" fill="#0f172a">Ensemble win-rate vs blend weight &#945;   (s = &#945;&#183;p_enc + (1&#8722;&#945;)&#183;p_moe)</text>
+
+  <!-- axes -->
+  <line x1="90" y1="90" x2="90" y2="320" stroke="#94a3b8" stroke-width="1.5"/>
+  <line x1="90" y1="320" x2="830" y2="320" stroke="#94a3b8" stroke-width="1.5"/>
+
+  <!-- y gridlines + labels -->
+  <g font-size="11.5" fill="#64748b" text-anchor="end">
+    <line x1="90" y1="274" x2="830" y2="274" stroke="#eef2f7"/><text x="82" y="278">0.60</text>
+    <line x1="90" y1="228" x2="830" y2="228" stroke="#eef2f7"/><text x="82" y="232">0.61</text>
+    <line x1="90" y1="182" x2="830" y2="182" stroke="#eef2f7"/><text x="82" y="186">0.62</text>
+    <line x1="90" y1="136" x2="830" y2="136" stroke="#eef2f7"/><text x="82" y="140">0.63</text>
+    <line x1="90" y1="90"  x2="830" y2="90"  stroke="#eef2f7"/><text x="82" y="94">0.64</text>
+  </g>
+  <text x="34" y="205" font-size="12.5" fill="#334155" transform="rotate(-90 34 205)" text-anchor="middle">held-out win-rate</text>
+
+  <!-- x labels -->
+  <g font-size="11.5" fill="#64748b" text-anchor="middle">
+    <text x="90"  y="340">0.0</text><text x="238" y="340">0.2</text><text x="386" y="340">0.4</text>
+    <text x="534" y="340">0.6</text><text x="682" y="340">0.8</text><text x="830" y="340">1.0</text>
+  </g>
+  <text x="460" y="366" font-size="12.5" fill="#334155" text-anchor="middle">&#945;  (weight on the encoder belief)</text>
+
+  <!-- curve -->
+  <polyline points="90,287.8 238,126.8 275,117.6 312,113 349,117.6 386,131.4 460,172.8 830,283.2"
+            fill="none" stroke="#059669" stroke-width="2.5"/>
+  <g fill="#059669">
+    <circle cx="90"  cy="287.8" r="4"/>
+    <circle cx="238" cy="126.8" r="4"/>
+    <circle cx="275" cy="117.6" r="4"/>
+    <circle cx="349" cy="117.6" r="4"/>
+    <circle cx="386" cy="131.4" r="4"/>
+    <circle cx="460" cy="172.8" r="4"/>
+    <circle cx="830" cy="283.2" r="4"/>
+  </g>
+  <!-- peak -->
+  <circle cx="312" cy="113" r="6" fill="#065f46"/>
+  <text x="312" y="100" text-anchor="middle" font-size="12.5" font-weight="700" fill="#065f46">&#945; = 0.30  &#8594;  0.635</text>
+
+  <!-- endpoint labels -->
+  <text x="104" y="284" font-size="12" fill="#7c3aed" font-weight="600">MoE only 0.597</text>
+  <text x="826" y="278" text-anchor="end" font-size="12" fill="#2563eb" font-weight="600">encoder only 0.598</text>
+
+  <text x="460" y="392" text-anchor="middle" font-size="12" fill="#64748b">two beliefs of similar strength combine to a higher accuracy than either alone: an ensemble diversity gain</text>
+</svg>

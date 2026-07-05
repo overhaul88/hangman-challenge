@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 880 400" width="100%" font-family="'Segoe UI',system-ui,-apple-system,sans-serif">
+  <rect x="0" y="0" width="880" height="400" rx="14" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="440" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">Five experts on two overlapping axes</text>
+  <text x="440" y="56" text-anchor="middle" font-size="13" fill="#64748b">each training word belongs to one length expert and one frequency expert (not a single 5-way split)</text>
+
+  <!-- Axis A: length -->
+  <text x="60" y="98" font-size="14" font-weight="700" fill="#5b21b6">Axis A: word length</text>
+  <g font-size="13" font-weight="600" text-anchor="middle" fill="#4c1d95">
+    <rect x="60"  y="112" width="230" height="64" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+    <text x="175" y="140">short</text><text x="175" y="162" font-size="11.5" font-weight="400" fill="#6d28d9">3 to 5 letters</text>
+    <rect x="305" y="112" width="230" height="64" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+    <text x="420" y="140">medium</text><text x="420" y="162" font-size="11.5" font-weight="400" fill="#6d28d9">6 to 9 letters</text>
+    <rect x="550" y="112" width="230" height="64" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+    <text x="665" y="140">long</text><text x="665" y="162" font-size="11.5" font-weight="400" fill="#6d28d9">10 or more letters</text>
+  </g>
+
+  <!-- Axis B: frequency -->
+  <text x="60" y="228" font-size="14" font-weight="700" fill="#1e40af">Axis B: bigram commonality (split at the median)</text>
+  <g font-size="13" font-weight="600" text-anchor="middle" fill="#1e3a8a">
+    <rect x="60"  y="242" width="350" height="64" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+    <text x="235" y="270">common</text><text x="235" y="292" font-size="11.5" font-weight="400" fill="#1d4ed8">upper half of average log-bigram score</text>
+    <rect x="430" y="242" width="350" height="64" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+    <text x="605" y="270">rare</text><text x="605" y="292" font-size="11.5" font-weight="400" fill="#1d4ed8">lower half of average log-bigram score</text>
+  </g>
+
+  <text x="440" y="352" text-anchor="middle" font-size="12.5" fill="#475569">score(word) = mean over adjacent bigrams of log P(bigram), with add-one smoothing over the training corpus</text>
+  <text x="440" y="376" text-anchor="middle" font-size="12.5" fill="#475569">architecture per expert: Embedding(28, 128) &#8594; 2-layer BiLSTM(512) &#8594; Linear(1024 &#8594; 26)  ·  ~9M params each</text>
+</svg>

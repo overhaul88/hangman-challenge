@@ -1,0 +1,31 @@
+Device: cuda
+in_vocab=174522  pseudo_oov=7093  held_out(OOV)=45404
+encoder: 6 layers, fine-tuning top 2 + head (3,558,938 trainable params)
+Traceback (most recent call last):
+  File "/home/acer/workspace/projects/hangman/src/train_drqn_v7.py", line 533, in <module>
+    main()
+  File "/home/acer/workspace/projects/hangman/src/train_drqn_v7.py", line 529, in main
+    train(args, device)
+  File "/home/acer/workspace/projects/hangman/src/train_drqn_v7.py", line 335, in train
+    pmoe = engine.p_moe_from_states(states)
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/acer/workspace/projects/hangman/src/belief_v7.py", line 217, in p_moe_from_states
+    out[torch.tensor(idxs, device=self.device)] = self._moe_group(ids, ab, pr, L)
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/utils/_contextlib.py", line 115, in decorate_context
+    return func(*args, **kwargs)
+  File "/home/acer/workspace/projects/hangman/src/belief_v7.py", line 197, in _moe_group
+    p = torch.softmax(m(input_ids), dim=-1)                    # (G,L,26)
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/acer/workspace/projects/hangman/src/evaluate.py", line 115, in forward
+    out, _ = self.lstm(self.embedding(x))
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1518, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/nn/modules/module.py", line 1527, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/home/acer/miniconda3/envs/vessel/lib/python3.10/site-packages/torch/nn/modules/rnn.py", line 879, in forward
+    result = _VF.lstm(input, hx, self._flat_weights, self.bias, self.num_layers,
+KeyboardInterrupt

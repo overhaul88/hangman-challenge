@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 560" width="100%" font-family="'Segoe UI',system-ui,-apple-system,sans-serif">
+  <rect x="0" y="0" width="900" height="560" rx="14" fill="#ffffff" stroke="#e2e8f0"/>
+  <defs>
+    <marker id="ah4" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <text x="450" y="34" text-anchor="middle" font-size="20" font-weight="700" fill="#0f172a">The negative-evidence encoder</text>
+
+  <!-- token row -->
+  <text x="60" y="80" font-size="13" font-weight="700" fill="#334155">board tokens</text>
+  <g font-size="18" font-weight="700" text-anchor="middle">
+    <rect x="60"  y="92" width="40" height="40" rx="6" fill="#eff6ff" stroke="#2563eb"/><text x="80"  y="119" fill="#1e3a8a">P</text>
+    <rect x="108" y="92" width="40" height="40" rx="6" fill="#eff6ff" stroke="#93c5fd"/><text x="128" y="119" fill="#93c5fd">_</text>
+    <rect x="156" y="92" width="40" height="40" rx="6" fill="#eff6ff" stroke="#93c5fd"/><text x="176" y="119" fill="#93c5fd">_</text>
+    <rect x="204" y="92" width="40" height="40" rx="6" fill="#eff6ff" stroke="#93c5fd"/><text x="224" y="119" fill="#93c5fd">_</text>
+    <rect x="252" y="92" width="40" height="40" rx="6" fill="#eff6ff" stroke="#93c5fd"/><text x="272" y="119" fill="#93c5fd">_</text>
+    <rect x="300" y="92" width="40" height="40" rx="6" fill="#eff6ff" stroke="#2563eb"/><text x="320" y="119" fill="#1e3a8a">E</text>
+  </g>
+  <text x="360" y="118" font-size="12.5" fill="#64748b">28-token vocab: PAD=0, a..z=1..26, MASK=27</text>
+
+  <!-- embedding + positional -->
+  <line x1="200" y1="132" x2="200" y2="162" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah4)"/>
+  <rect x="60" y="166" width="420" height="44" rx="9" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="270" y="193" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">char Embedding(28 &#8594; 384)  +  learned positional embedding</text>
+
+  <!-- context injection from the right -->
+  <rect x="560" y="150" width="300" height="76" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="710" y="174" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">guessed-state context (52-dim)</text>
+  <text x="710" y="194" text-anchor="middle" font-size="12" fill="#6d28d9">[ absent(26)  |  present(26) ]</text>
+  <text x="710" y="213" text-anchor="middle" font-size="12" fill="#6d28d9">Linear(52 &#8594; 384), added to every token</text>
+  <line x1="560" y1="188" x2="484" y2="188" stroke="#7c3aed" stroke-width="2" marker-end="url(#ah4)"/>
+
+  <!-- transformer -->
+  <line x1="270" y1="210" x2="270" y2="240" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah4)"/>
+  <rect x="60" y="244" width="420" height="120" rx="10" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="270" y="268" text-anchor="middle" font-size="14" font-weight="700" fill="#1e40af">6-layer Transformer encoder</text>
+  <g font-size="11.5" text-anchor="middle" fill="#1d4ed8" font-weight="600">
+    <rect x="80"  y="284" width="180" height="26" rx="6" fill="#dbeafe" stroke="#93c5fd"/><text x="170" y="301">self-attention (8 heads)</text>
+    <rect x="280" y="284" width="180" height="26" rx="6" fill="#dbeafe" stroke="#93c5fd"/><text x="370" y="301">feed-forward 1536, GELU</text>
+  </g>
+  <text x="270" y="336" text-anchor="middle" font-size="12" fill="#1d4ed8">d_model = 384 · dropout 0.1 · ~10.7M params</text>
+  <text x="270" y="354" text-anchor="middle" font-size="11.5" fill="#64748b">x6 stacked blocks</text>
+
+  <!-- per position head -->
+  <line x1="270" y1="364" x2="270" y2="394" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah4)"/>
+  <rect x="60" y="398" width="420" height="42" rx="9" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="270" y="424" text-anchor="middle" font-size="13" font-weight="600" fill="#1e40af">per-position head: Linear(384 &#8594; 26)  &#8594;  logits at each cell</text>
+
+  <!-- read out -->
+  <line x1="270" y1="440" x2="270" y2="470" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah4)"/>
+  <rect x="60" y="474" width="420" height="60" rx="10" fill="#d1fae5" stroke="#059669"/>
+  <text x="270" y="498" text-anchor="middle" font-size="13" font-weight="700" fill="#065f46">read-out</text>
+  <text x="270" y="519" text-anchor="middle" font-size="12.5" fill="#047857">softmax, then mean over the blank ( _ ) positions &#8594; p_enc (26)</text>
+
+  <!-- training panel -->
+  <rect x="560" y="256" width="300" height="278" rx="10" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="710" y="282" text-anchor="middle" font-size="13.5" font-weight="700" fill="#334155">training signal</text>
+  <line x1="580" y1="294" x2="840" y2="294" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="576" y="316" font-size="12" fill="#475569">letter-level masking: hide all</text>
+  <text x="576" y="333" font-size="12" fill="#475569">occurrences of sampled letters</text>
+  <text x="576" y="357" font-size="12" fill="#475569">sample 0..6 absent letters as</text>
+  <text x="576" y="374" font-size="12" fill="#475569">wrong-guess negative evidence</text>
+  <text x="576" y="398" font-size="12" fill="#475569">cross-entropy on hidden cells</text>
+  <text x="576" y="415" font-size="12" fill="#475569">only (ignore_index = -100)</text>
+  <text x="576" y="439" font-size="12" fill="#475569">curriculum widens from mostly-</text>
+  <text x="576" y="456" font-size="12" fill="#475569">revealed to all-blank openings</text>
+  <text x="576" y="480" font-size="12" fill="#475569">checkpoint selected by simulated</text>
+  <text x="576" y="497" font-size="12" fill="#475569">game win-rate, not val loss</text>
+  <text x="576" y="521" font-size="12" fill="#64748b">AdamW · warmup + cosine decay</text>
+</svg>

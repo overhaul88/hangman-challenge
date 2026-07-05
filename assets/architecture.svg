@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 664" width="100%" font-family="'Segoe UI',system-ui,-apple-system,sans-serif">
+  <rect x="0" y="0" width="920" height="664" rx="14" fill="#ffffff" stroke="#e2e8f0"/>
+  <defs>
+    <marker id="ah3" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+    </marker>
+  </defs>
+  <text x="460" y="34" text-anchor="middle" font-size="18" font-weight="700" fill="#0f172a">Strategy 2: ensemble of a gated MoE and a negative-evidence encoder</text>
+
+  <!-- Input -->
+  <rect x="300" y="54" width="320" height="56" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="460" y="78" text-anchor="middle" font-size="14" font-weight="700" fill="#0f172a">board pattern  P _ _ _ _ E</text>
+  <text x="460" y="98" text-anchor="middle" font-size="12.5" fill="#475569">+ guessed set { a, e, p }</text>
+
+  <!-- split arrows -->
+  <line x1="420" y1="110" x2="250" y2="146" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <line x1="500" y1="110" x2="670" y2="146" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+
+  <!-- LEFT: MoE -->
+  <rect x="70" y="150" width="360" height="112" rx="10" fill="#ede9fe" stroke="#7c3aed"/>
+  <text x="90" y="174" font-size="14" font-weight="700" fill="#5b21b6">MIXTURE OF EXPERTS  (~45M params)</text>
+  <text x="90" y="193" font-size="12" fill="#6d28d9">five BiLSTM specialists on two axes (length x frequency)</text>
+  <g font-size="12.5" font-weight="600" text-anchor="middle" fill="#4c1d95">
+    <rect x="88"  y="204" width="58" height="30" rx="15" fill="#ddd6fe" stroke="#a78bfa"/><text x="117" y="223">short</text>
+    <rect x="152" y="204" width="70" height="30" rx="15" fill="#ddd6fe" stroke="#a78bfa"/><text x="187" y="223">medium</text>
+    <rect x="228" y="204" width="52" height="30" rx="15" fill="#ddd6fe" stroke="#a78bfa"/><text x="254" y="223">long</text>
+    <rect x="286" y="204" width="74" height="30" rx="15" fill="#ddd6fe" stroke="#a78bfa"/><text x="323" y="223">common</text>
+    <rect x="366" y="204" width="52" height="30" rx="15" fill="#ddd6fe" stroke="#a78bfa"/><text x="392" y="223">rare</text>
+  </g>
+  <text x="90" y="252" font-size="11.5" fill="#7c3aed">each expert: blank-averaged 26-dim letter distribution</text>
+
+  <line x1="250" y1="262" x2="250" y2="296" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <rect x="110" y="300" width="280" height="60" rx="10" fill="#f5f3ff" stroke="#7c3aed"/>
+  <text x="250" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#5b21b6">Gating network</text>
+  <text x="250" y="344" text-anchor="middle" font-size="12" fill="#6d28d9">159 &#8594; 256 &#8594; 128 &#8594; 5  (softmax weights)</text>
+
+  <line x1="250" y1="360" x2="250" y2="398" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <rect x="170" y="402" width="160" height="46" rx="10" fill="#7c3aed"/>
+  <text x="250" y="430" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">p_moe  (26)</text>
+
+  <!-- RIGHT: Encoder -->
+  <rect x="490" y="150" width="360" height="112" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+  <text x="510" y="174" font-size="14" font-weight="700" fill="#1e40af">NEGATIVE-EVIDENCE ENCODER  (10.7M)</text>
+  <text x="510" y="194" font-size="12" fill="#1d4ed8">6-layer Transformer · d=384 · 8 heads · ff=1536</text>
+  <text x="510" y="214" font-size="12" fill="#1d4ed8">token + positional + Linear([absent | present] &#8594; 384)</text>
+  <text x="510" y="234" font-size="12" fill="#1d4ed8">per-position 26-way head, trained on realistic boards</text>
+
+  <line x1="670" y1="262" x2="670" y2="296" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <rect x="530" y="300" width="280" height="60" rx="10" fill="#eff6ff" stroke="#2563eb"/>
+  <text x="670" y="324" text-anchor="middle" font-size="13" font-weight="700" fill="#1e40af">belief read-out</text>
+  <text x="670" y="344" text-anchor="middle" font-size="12" fill="#1d4ed8">mean-pool over blanks &#8594; softmax</text>
+
+  <line x1="670" y1="360" x2="670" y2="398" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <rect x="590" y="402" width="160" height="46" rx="10" fill="#2563eb"/>
+  <text x="670" y="430" text-anchor="middle" font-size="15" font-weight="700" fill="#ffffff">p_enc  (26)</text>
+
+  <!-- Blend -->
+  <line x1="250" y1="448" x2="400" y2="494" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <line x1="670" y1="448" x2="520" y2="494" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <rect x="300" y="498" width="320" height="54" rx="10" fill="#d1fae5" stroke="#059669"/>
+  <text x="460" y="531" text-anchor="middle" font-size="16" font-weight="700" fill="#065f46">s = 0.30 &#183; p_enc + 0.70 &#183; p_moe</text>
+
+  <line x1="460" y1="552" x2="460" y2="584" stroke="#64748b" stroke-width="1.8" marker-end="url(#ah3)"/>
+  <rect x="290" y="588" width="340" height="40" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+  <text x="460" y="613" text-anchor="middle" font-size="13.5" font-weight="600" fill="#0f172a">mask guessed letters  &#8594;  argmax  &#8594;  next guess</text>
+
+  <!-- Result pill -->
+  <rect x="640" y="588" width="230" height="40" rx="20" fill="#065f46"/>
+  <text x="755" y="613" text-anchor="middle" font-size="14" font-weight="700" fill="#ffffff">held-out OOV win-rate  0.635</text>
+</svg>

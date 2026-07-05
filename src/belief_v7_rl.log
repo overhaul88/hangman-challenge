@@ -1,0 +1,25 @@
+Device: cuda
+in_vocab=174522  pseudo_oov=7093  held_out(OOV)=45404
+encoder: 6 layers, fine-tuning top 2 + head (3,558,938 trainable params)
+frozen-oracle cache: cap=0 states
+AMP mixed precision: on
+eps=20023 gstep=1680 epsilon=0.44 roll_wr=0.451 buf=99998 loss=24.401 q=6.81 mlm=nan | pseudoOOV wr=0.5930 (best=0.5930) -> saved best | cache_hit=0.00(n=0) [28.1m]
+[warmup done @ 20023 eps] unfroze encoder top 2 blocks + head
+eps=40106 gstep=3384 epsilon=0.39 roll_wr=0.434 buf=99988 loss=25.416 q=3.25 mlm=2.488 | pseudoOOV wr=0.7160 (best=0.7160) -> saved best | cache_hit=0.00(n=0) [60.7m]
+eps=60138 gstep=5096 epsilon=0.33 roll_wr=0.472 buf=99997 loss=36.915 q=13.44 mlm=2.597 | pseudoOOV wr=0.7810 (best=0.7810) -> saved best | cache_hit=0.00(n=0) [92.9m]
+eps=80192 gstep=6808 epsilon=0.28 roll_wr=0.512 buf=99994 loss=27.004 q=13.50 mlm=1.976 | pseudoOOV wr=0.8350 (best=0.8350) -> saved best | cache_hit=0.00(n=0) [124.8m]
+eps=100262 gstep=8520 epsilon=0.22 roll_wr=0.524 buf=99990 loss=22.383 q=20.13 mlm=2.647 | pseudoOOV wr=0.8360 (best=0.8360) -> saved best | cache_hit=0.00(n=0) [157.0m]
+eps=120365 gstep=10232 epsilon=0.17 roll_wr=0.575 buf=99995 loss=38.189 q=17.90 mlm=2.176 | pseudoOOV wr=0.8650 (best=0.8650) -> saved best | cache_hit=0.00(n=0) [188.9m]
+eps=140437 gstep=11936 epsilon=0.11 roll_wr=0.591 buf=99998 loss=44.767 q=17.42 mlm=2.561 | pseudoOOV wr=0.8540 (best=0.8650) | cache_hit=0.00(n=0) [220.7m]
+eps=160443 gstep=13624 epsilon=0.05 roll_wr=0.615 buf=99991 loss=32.116 q=23.35 mlm=2.762 | pseudoOOV wr=0.8580 (best=0.8650) | cache_hit=0.00(n=0) [252.0m]
+eps=180488 gstep=15320 epsilon=0.05 roll_wr=0.622 buf=99998 loss=29.409 q=20.83 mlm=2.198 | pseudoOOV wr=0.8690 (best=0.8690) -> saved best | cache_hit=0.00(n=0) [283.4m]
+eps=200571 gstep=17016 epsilon=0.05 roll_wr=0.641 buf=99998 loss=32.238 q=16.69 mlm=2.375 | pseudoOOV wr=0.8800 (best=0.8800) -> saved best | cache_hit=0.00(n=0) [314.8m]
+eps=220578 gstep=18704 epsilon=0.05 roll_wr=0.630 buf=99996 loss=40.702 q=17.31 mlm=1.993 | pseudoOOV wr=0.8760 (best=0.8800) | cache_hit=0.00(n=0) [346.2m]
+eps=240631 gstep=20392 epsilon=0.05 roll_wr=0.631 buf=99996 loss=29.932 q=17.34 mlm=2.118 | pseudoOOV wr=0.8890 (best=0.8890) -> saved best | cache_hit=0.00(n=0) [377.9m]
+eps=260709 gstep=22072 epsilon=0.05 roll_wr=0.644 buf=99997 loss=40.262 q=14.72 mlm=2.214 | pseudoOOV wr=0.8880 (best=0.8890) | cache_hit=0.00(n=0) [409.0m]
+
+=== Final held-out (OOV) gate: v7 vs strategy2 ===
+strategy2 : win-rate=0.6350  avg-wrong=3.85
+v7 (best) : win-rate=0.5683  avg-wrong=4.18
+delta = -0.0667  | discordant: v7_only=164 v2_only=364 (both=1541 neither=931, n=3000)
+v7 did NOT beat strategy2 on held-out OOV; ship strategy2 (no-regression).

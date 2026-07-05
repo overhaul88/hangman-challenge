@@ -1,0 +1,5 @@
+.env
+models/
+dataset/
+strategy/
+src/__pycache__/*

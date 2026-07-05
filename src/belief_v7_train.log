@@ -1,0 +1,31 @@
+Device: cuda
+in_vocab=174522  pseudo_oov=7093  held_out(OOV)=45404
+encoder: 6 layers, fine-tuning top 2 + head (3,558,938 trainable params)  lr=3e-05
+AMP mixed precision: on
+[step 0 / strategy2 baseline] pseudoOOV wr=0.9100 aw=1.92 mlm_acc=0.464
+step=3000 loss=2.0294 | pseudoOOV wr=0.9140 aw=1.93 (best=0.9140, base=0.9100) -> saved best | mlm_acc=0.434 (base=0.464) [17.3m]
+step=6000 loss=2.0291 | pseudoOOV wr=0.9090 aw=1.95 (best=0.9140, base=0.9100) | mlm_acc=0.421 (base=0.464) [33.0m]
+step=9000 loss=2.0317 | pseudoOOV wr=0.9100 aw=1.93 (best=0.9140, base=0.9100) | mlm_acc=0.403 (base=0.464)  [!] MLM acc dropped >5pt [50.6m]
+step=12000 loss=2.0276 | pseudoOOV wr=0.9110 aw=1.96 (best=0.9140, base=0.9100) | mlm_acc=0.415 (base=0.464) [64.7m]
+step=15000 loss=2.0263 | pseudoOOV wr=0.9060 aw=1.97 (best=0.9140, base=0.9100) | mlm_acc=0.404 (base=0.464)  [!] MLM acc dropped >5pt [72.5m]
+step=18000 loss=2.0263 | pseudoOOV wr=0.9070 aw=1.96 (best=0.9140, base=0.9100) | mlm_acc=0.413 (base=0.464)  [!] MLM acc dropped >5pt [80.4m]
+step=21000 loss=2.0304 | pseudoOOV wr=0.9100 aw=1.97 (best=0.9140, base=0.9100) | mlm_acc=0.384 (base=0.464)  [!] MLM acc dropped >5pt [88.3m]
+step=24000 loss=2.0296 | pseudoOOV wr=0.9140 aw=1.97 (best=0.9140, base=0.9100) | mlm_acc=0.401 (base=0.464)  [!] MLM acc dropped >5pt [96.2m]
+step=27000 loss=2.0258 | pseudoOOV wr=0.9070 aw=1.98 (best=0.9140, base=0.9100) | mlm_acc=0.377 (base=0.464)  [!] MLM acc dropped >5pt [104.1m]
+step=30000 loss=2.0252 | pseudoOOV wr=0.9130 aw=1.97 (best=0.9140, base=0.9100) | mlm_acc=0.399 (base=0.464)  [!] MLM acc dropped >5pt [112.0m]
+step=33000 loss=2.0253 | pseudoOOV wr=0.9190 aw=1.96 (best=0.9190, base=0.9100) -> saved best | mlm_acc=0.372 (base=0.464)  [!] MLM acc dropped >5pt [119.9m]
+step=36000 loss=2.0253 | pseudoOOV wr=0.9180 aw=1.94 (best=0.9190, base=0.9100) | mlm_acc=0.372 (base=0.464)  [!] MLM acc dropped >5pt [127.8m]
+step=39000 loss=2.0248 | pseudoOOV wr=0.9180 aw=1.96 (best=0.9190, base=0.9100) | mlm_acc=0.361 (base=0.464)  [!] MLM acc dropped >5pt [135.6m]
+step=42000 loss=2.0242 | pseudoOOV wr=0.9100 aw=1.97 (best=0.9190, base=0.9100) | mlm_acc=0.381 (base=0.464)  [!] MLM acc dropped >5pt [143.6m]
+step=45000 loss=2.0228 | pseudoOOV wr=0.9130 aw=1.97 (best=0.9190, base=0.9100) | mlm_acc=0.372 (base=0.464)  [!] MLM acc dropped >5pt [151.4m]
+step=48000 loss=2.0240 | pseudoOOV wr=0.9160 aw=1.98 (best=0.9190, base=0.9100) | mlm_acc=0.379 (base=0.464)  [!] MLM acc dropped >5pt [159.4m]
+step=51000 loss=2.0245 | pseudoOOV wr=0.9150 aw=1.96 (best=0.9190, base=0.9100) | mlm_acc=0.366 (base=0.464)  [!] MLM acc dropped >5pt [167.3m]
+step=54000 loss=2.0225 | pseudoOOV wr=0.9120 aw=1.98 (best=0.9190, base=0.9100) | mlm_acc=0.373 (base=0.464)  [!] MLM acc dropped >5pt [175.1m]
+step=57000 loss=2.0238 | pseudoOOV wr=0.9160 aw=1.97 (best=0.9190, base=0.9100) | mlm_acc=0.377 (base=0.464)  [!] MLM acc dropped >5pt [183.0m]
+step=60000 loss=2.0236 | pseudoOOV wr=0.9130 aw=1.98 (best=0.9190, base=0.9100) | mlm_acc=0.362 (base=0.464)  [!] MLM acc dropped >5pt [191.0m]
+
+=== Final held-out (OOV) gate: v7-belief vs strategy2 ===
+strategy2  : win-rate=0.6350  avg-wrong=3.85
+v7-belief  : win-rate=0.6297  avg-wrong=3.85
+delta = -0.0053  | discordant: v7_only=61 v2_only=77 (both=1828 neither=1034, n=3000)
+v7-belief did NOT beat strategy2 on held-out OOV; ship strategy2 (no-regression).
