@@ -1,16 +1,13 @@
-# Playing Hangman on Words It Has Never Seen: A Gated Mixture of Experts, a Negative-Evidence Encoder, and the Ensemble That Reached 63.5%
+# Hangman Challenge using Mixture of Experts & Negative Evidence Transformer Encoder:
 
-I was given the Trexquant Hangman challenge: build an agent that plays Hangman against a
+I attempted the Trexquant Hangman challenge: build an agent that plays Hangman against a
 remote server and wins as often as possible. The catch that governs the entire problem is
 that the words the server tests me on are not in the dictionary I am given to train on. This
 document records how I framed the task, the two models I built, the ensemble that combined
-them, the number it reached on the out-of-vocabulary test condition (a win-rate of 0.635),
-and the reasoning behind why that particular combination generalizes where other methods do
-not. The final section reports the reinforcement-learning framework I designed to push past
+them, the number it reached on the out of vocabulary test condition (a win rate of 0.635),
+and my own reasoning behind why that particular combination generalizes. 
+The final section reports the reinforcement learning framework I designed to push past
 0.635 and what it taught me.
-
-All code is in `src/`. All Torch work runs in the `vessel` conda environment
-(`~/miniconda3/envs/vessel/bin/python`, torch 2.1.0+cu118, CUDA on a 4 GB GTX 1650).
 
 ---
 
@@ -18,29 +15,29 @@ All code is in `src/`. All Torch work runs in the `vessel` conda environment
 
 The client plays Hangman against the trexsim server. A game runs as follows:
 
-1. The server picks a hidden word and returns a masked pattern, a space-separated string
+1. The server picks a hidden word and returns a masked pattern, a space separated string
    such as `_ p p _ e`. Underscores are unknown positions; revealed letters are shown in
    place.
 2. On each turn the client guesses one letter. If the letter is in the word, the server
-   reveals every position where it occurs at once. If it is not, a wrong-guess counter goes
+   reveals every position where it occurs at once. If it is not, a wrong guess counter goes
    up.
 3. A game allows six wrong guesses. It is won when no underscores remain and lost when the
    sixth wrong guess is spent.
 
-The modeling question at the center of every turn is one sentence: given the revealed
+The modeling question at the center of every turn is that, given the revealed
 pattern and the set of letters already guessed, which letter is most likely to appear in a
 hidden position.
 
-### The constraint that defines the difficulty
+### The constraints
 
 The evaluation dictionary is disjoint from the training dictionary. To reproduce this
 condition offline I clean the provided corpus (lowercase, alphabetic, length above two,
-giving 227,019 words), shuffle with `seed=42`, and split 80/20 into 181,615 training words
-and 45,404 held-out words. The held-out split shares zero words with the training split, so
+giving 227,019 words), shuffle and split 80/20 into 181,615 training words
+and 45,404 held out words. The held out split shares zero words with the training split, so
 every held-out game is played on a word the models were never trained on. I verified this
-directly: 0 of the 45,404 held-out words occur in the 181,615-word training corpus. Every
-win-rate reported here is measured on that held-out split, so it is an estimate of
-out-of-vocabulary (OOV) performance, which is the only performance the challenge scores.
+directly: 0 of the 45,404 held out words occur in the 181,615 word training corpus. Every
+win-rate reported here is measured on that held out split, so it is an estimate of
+out of vocabulary (OOV) performance, which is the only performance the challenge scores.
 
 This single fact is the reason the project is hard and the reason most of the methods I
 tried later failed. Any method that answers "which letter next" by consulting the training
@@ -79,14 +76,14 @@ word is new.
 
 ## 3. The belief objective: masked language modeling with negative evidence
 
-I treat a partially revealed word as a masked-language-modeling problem. A model reads the
+I treat a partially revealed word as a masked language modeling problem. A model reads the
 board with unknown positions marked by a mask token and predicts, at every position, a
 distribution over the 26 letters. The shared vocabulary across every model in the project is
 fixed so checkpoints stay comparable: `PAD=0`, `a..z = 1..26`, `MASK=27`, for a vocabulary
 size of 28. Letter targets and outputs use the `0..25` range.
 
-To turn a matrix of per-position distributions into one guess, I softmax the logits, average
-the distributions over the blank positions only, mask the already-guessed letters, and take
+To turn a matrix of perp osition distributions into one guess, I softmax the logits, average
+the distributions over the blank positions only, mask the already guessed letters, and take
 the argmax. This "average over blanks" reduction is the inference primitive used everywhere
 in the codebase.
 
@@ -113,7 +110,7 @@ statistics differ by word length and by how common a word's letter patterns are.
 
 The five experts are carved along two independent axes. Each training word belongs to one
 length expert and one frequency expert at the same time, so the experts overlap rather than
-forming a single 5-way partition.
+forming a single 5 way partition.
 
 <div align="center">
   <img src="assets/expert_axes.svg" alt="Two axes. Length axis: short 3 to 5, medium 6 to 9, long 10 or more. Frequency axis split at the median bigram score: common upper half, rare lower half. Each expert is a 2-layer BiLSTM." width="100%">
